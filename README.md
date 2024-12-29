@@ -9,11 +9,30 @@
 Shooting machine 
 
 ## Getting Started
-dfad
+Clone Repository
+
+Set up virtual environment from terminal
+
+python -m venv "yourvenvname"
 
 ## Dependencies
+Activate venv
+.\venv\Scripts\Activate
+
+or
+
+/"yourvenvname"/Scripts/Activate
+
+Once in venv
+pip install mediapipe opencv-python
+
+Deactivating venv
+deactivate
+
+IF "ImportError: DLL load failed while importing _framework_bindings: A dynamic link library (DLL) initialization routine failed." for cv2, mediapipe, and numpy, try to change python interpreter version, Python 3.12.4 worked for me
 
 ## Running the Program
+python main.py
 
 ## License
 
