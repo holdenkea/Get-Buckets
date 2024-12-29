@@ -29,7 +29,15 @@ pip install mediapipe opencv-python
 Deactivating venv
 deactivate
 
-IF "ImportError: DLL load failed while importing _framework_bindings: A dynamic link library (DLL) initialization routine failed." for cv2, mediapipe, and numpy, try to change python interpreter version, Python 3.12.4 worked for me
+IF "ImportError: DLL load failed while importing _framework_bindings: A dynamic link library (DLL) initialization routine failed." for cv2, mediapipe, and numpy, try to change python interpreter version, 
+
+Install a python version between 3.7 and 3.10, for me I used 3.10.2
+
+Then, check versions using py -0
+
+Now run py -3.10 -m venv venv
+
+Activate venv and try to run
 
 ## Running the Program
 python main.py
