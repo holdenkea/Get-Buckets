@@ -43,6 +43,7 @@ Activate venv and try to run
 python main.py
 
 ## License
+Apache License 2.0 
 
 ## Acknowledgements
 Mention youtuber 
