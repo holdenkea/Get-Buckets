@@ -11,7 +11,7 @@ Shooting machine
 
 ## Getting Started
 
-### Module Setup
+### Arduino IDE Setup
   1) Install Arduino IDE
       - V1.8.10/V1.8.19
   2) Go to Tools-> Board -> Boards Manager -> Search and Install ESP32 Board Package 
@@ -21,9 +21,24 @@ Shooting machine
       - Version 2.5.13 at time of writing
       - If "The library Adafruit SSD1306:version neeeds some other library dependecies..."
      message shows up, Install all missising dependencies.
+  4) Set Board using Tools -> Board -> ESP32 Arduino -> ESP32S3 Dev Module
+  5) Plug in USB Type-C into module and machine running Arduino IDE
+      - Select Tools -> Port -> (Serial Port for your connection)
+      -     
+### Setting Up Tag Module  
+This project uses one tag.
+  1) Navigate to src -> uwb -> tags -> ... and open in Arduino IDE
+  2) Verify code using Sketch -> Verify/Compile (Ctrl+R)
+  3) Upload code using Sketch -> Upload (Ctrl+U)
+
+### Setting Up Anchor Modules
+This project uses three anchors.
+  1) Navigate to src -> uwb -> anchors -> ...
+  2) Verify and Upload Code.
 
 
 
+[Manufacturer Instructions](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
 
 Clone Repository
 
