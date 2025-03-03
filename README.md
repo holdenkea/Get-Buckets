@@ -1,6 +1,7 @@
 ## Table of Contents
 - [About](#about)
 - [Getting Started](#getting-started)
+  - [Setting up MaUWB_DW3000 Modules](#module-setup)   
 - [Running](#running-the-program)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
@@ -9,6 +10,21 @@
 Shooting machine 
 
 ## Getting Started
+
+### Module Setup
+  1) Install Arduino IDE
+      - V1.8.10/V1.8.19
+  2) Go to Tools-> Board -> Boards Manager -> Search and Install ESP32 Board Package 
+      - Project is based on the ESP32-S3 development board by Espressif Systems
+      - Version 3.2.0-RC1 at time of writing
+  3) Go to Tools -> Manage Libraries -> Search and Install Adafruit SSD1306 Library
+      - Version 2.5.13 at time of writing
+      - If "The library Adafruit SSD1306:version neeeds some other library dependecies..."
+     message shows up, Install all missising dependencies.
+
+
+
+
 Clone Repository
 
 Set up virtual environment from terminal
