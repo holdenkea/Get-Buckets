@@ -28,15 +28,18 @@ Shooting machine
 ### Setting Up Tag Module  
 This project uses one tag.
   1) Navigate to src -> uwb -> tags -> ... and open in Arduino IDE
-  2) Verify code using Sketch -> Verify/Compile (Ctrl+R)
-  3) Upload code using Sketch -> Upload (Ctrl+U)
+  2) Verify code using the Verify Button or Sketch -> Verify/Compile (Ctrl+R)
+  3) Upload code using the Upload Button or Sketch -> Upload (Ctrl+U)
 
 ### Setting Up Anchor Modules
 This project uses three anchors.
   1) Navigate to src -> uwb -> anchors -> ...
   2) Verify and Upload Code.
 
-
+### Arduino IDE Serial Monitor
+Once all code is uploaded, check distance and signal strengths of tag to anchors.
+  1) Navigate to Tools -> Serial Monitor
+  2)                                                                    
 
 [Manufacturer Instructions](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
 
