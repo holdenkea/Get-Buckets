@@ -1,7 +1,7 @@
 ## Table of Contents
 - [About](#about)
 - [Getting Started](#getting-started)
-  - [Setting up MaUWB_DW3000 Modules](#module-setup)   
+  - [Setting up MaUWB_DW3000 Modules](#arduino-ide-setup)   
 - [Running](#running-the-program)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
@@ -80,6 +80,10 @@ python main.py
 Apache License 2.0 
 
 ## Acknowledgements
-Mention youtuber 
+Links to revisit:
 
-Nicholas Renotte
+- [Module Used](https://www.makerfabs.com/mauwb-esp32s3-uwb-module.html)
+- [Makerfabs Github for Modules](https://github.com/Makerfabs/MaUWB_ESP32S3-with-STM32-AT-Command)
+- [Makerfabs Wiki](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
+- [UWB Positioning w/ Python](https://wiki.makerfabs.com/UWB%20positioning%20development%20with%20python.html)
+
