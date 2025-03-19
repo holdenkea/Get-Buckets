@@ -10,6 +10,8 @@
 Shooting machine 
 
 ## Getting Started
+Data collection, used IPHONE to record vidoes, used command
+"ffmpeg -i ".\raw_unprocessed\input.mov" -c ".\mp4_unprocessed\output.mp4"
 
 ### Arduino IDE Setup
   1) Install Arduino IDE
