@@ -11,7 +11,15 @@ Shooting machine
 
 ## Getting Started
 Data collection, used IPHONE to record vidoes, used command
-"ffmpeg -i ".\raw_unprocessed\input.mov" -c ".\mp4_unprocessed\output.mp4"
+"ffmpeg -i ".\raw_unprocessed\input.mov" -c copy ".\mp4_unprocessed\output.mp4"
+
+to change an mov file to an mp4 file without loss of quality.
+
+Then I needed to change each of these files to 1080 x something so that opencv or whatever can process it
+
+Then I need to pad the videos with 0's to have an equal length or something
+
+Then I need to reverse the videos to account for difference in dominant hands
 
 ### Arduino IDE Setup
   1) Install Arduino IDE
