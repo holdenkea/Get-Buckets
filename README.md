@@ -94,6 +94,16 @@ Uninstall tensorflow
 
 Try pip install tensorflow==2.10
 
+NEW REDO 
+py -3.10 -m venv venv
+
+pip install tensorflow==2.15 mediapipe==0.10.9 opencv-python==4.8.1.78
+
+pip install PyQt5 pyqtgraph
+
+pip install pyserial
+
+activate 
 ## Running the Program
 python main.py
 
