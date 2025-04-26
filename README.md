@@ -83,6 +83,17 @@ Now run py -3.10 -m venv venv
 
 Activate venv and try to run
 
+IF ImportError: DLL load failed while importing _pywrap_tensorflow_internal: A dynamic link library (DLL) initialization routine failed.       
+
+
+Failed to load the native TensorFlow runtime.
+See https://www.tensorflow.org/install/errors for some common causes and solutions.
+If you need help, create an issue at https://github.com/tensorflow/tensorflow/issues and include the entire stack trace above this error message.
+
+Uninstall tensorflow
+
+Try pip install tensorflow==2.10
+
 ## Running the Program
 python main.py
 
