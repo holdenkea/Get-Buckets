@@ -95,15 +95,14 @@ Uninstall tensorflow
 Try pip install tensorflow==2.10
 
 NEW REDO 
-py -3.10 -m venv venv
+python -m venv venv312 ( I am using python version 3.12.4 )
+activate venv
 
-pip install tensorflow==2.15 mediapipe==0.10.9 opencv-python==4.8.1.78
+versions to match colab version I used for training
+pip install tensorflow==2.18.0 mediapipe==0.10.13 opencv-python
 
-pip install PyQt5 pyqtgraph
+pip install PyQt5 pyqtgraph pyserial
 
-pip install pyserial
-
-activate 
 ## Running the Program
 python main.py
 
