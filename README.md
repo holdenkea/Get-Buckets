@@ -5,7 +5,6 @@
   - [Clone the Repo](#clone-the-repo)
   - [Running the Program](#running-the-program)
   - [Setting up MaUWB_DW3000 Modules](#arduino-ide-setup)   
-- [Running](#running-the-program)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
