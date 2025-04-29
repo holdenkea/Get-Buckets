@@ -7,19 +7,13 @@
 - [Acknowledgements](#acknowledgements)
 
 ## About
-Shooting machine 
+Welcome to my Get Buckets repository! This project was driven by my love for the game of basketball, and how I would have to fill out "shot charts" for my basketball teams as a young kid 
+
+This project combines a real-time pose classifier, UWB modules for indoor positioning, and a simple UI to track, save, and visualize where on the court shots were made and missed.
+
+For a full tutorial of my data collection and model building process you can visit my [colab notebook.](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
 
 ## Getting Started
-Data collection, used IPHONE to record vidoes, used command
-"ffmpeg -i ".\raw_unprocessed\input.mov" -c copy ".\mp4_unprocessed\output.mp4"
-
-to change an mov file to an mp4 file without loss of quality.
-
-Then I needed to change each of these files to 1080 x something so that opencv or whatever can process it
-
-Then I need to pad the videos with 0's to have an equal length or something
-
-Then I need to reverse the videos to account for difference in dominant hands
 
 ### Arduino IDE Setup
   1) Install Arduino IDE
