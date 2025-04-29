@@ -1,19 +1,44 @@
 ## Table of Contents
 - [About](#about)
 - [Getting Started](#getting-started)
+  - [Set up Virtual Environment](#set-up-virtual-environment)  
+  - [Clone the Repo](#clone-the-repo)
   - [Setting up MaUWB_DW3000 Modules](#arduino-ide-setup)   
 - [Running](#running-the-program)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
 ## About
-Welcome to my Get Buckets repository! This project was driven by my love for the game of basketball, and how I would have to fill out "shot charts" for my basketball teams as a young kid 
+Welcome to my Get Buckets repository! This project was driven by my love for the game of basketball, and how I would have to fill out "shot charts" for my basketball teams as a young kid.
 
 This project combines a real-time pose classifier, UWB modules for indoor positioning, and a simple UI to track, save, and visualize where on the court shots were made and missed.
 
 For a full tutorial of my data collection and model building process you can visit my [colab notebook.](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
 
 ## Getting Started
+
+### Set up Virtual Environment
+```
+# initialize virtual environment
+python -m venv venv312 # (I am using python version 3.12.4)
+
+# activate venv
+.\venv\Scripts\Activate
+
+# download dependencies using pip
+pip install tensorflow==2.18.0 mediapipe==0.10.13 opencv-python
+
+pip install PyQt5 pyqtgraph pyserial
+```
+
+If you encounter any of the following errors, it is most likely due to a version mismatch, try to use the exact versions I specified.
+
+  1) IF "ImportError: DLL load failed while importing _framework_bindings: A dynamic link library (DLL) initialization routine failed." for cv2, mediapipe, and numpy, try to change python interpreter version, 
+
+  2) IF ImportError: DLL load failed while importing _pywrap_tensorflow_internal: A dynamic link library (DLL) initialization routine failed.       
+
+### Clone the Repo
+
 
 ### Arduino IDE Setup
   1) Install Arduino IDE
@@ -48,54 +73,6 @@ Once all code is uploaded, check distance and signal strengths of tag to anchors
 [Manufacturer Instructions](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
 
 Clone Repository
-
-Set up virtual environment from terminal
-
-python -m venv "yourvenvname"
-
-## Dependencies
-Activate venv
-.\venv\Scripts\Activate
-
-or
-
-/"yourvenvname"/Scripts/Activate
-
-Once in venv
-pip install mediapipe opencv-python
-
-Deactivating venv
-deactivate
-
-IF "ImportError: DLL load failed while importing _framework_bindings: A dynamic link library (DLL) initialization routine failed." for cv2, mediapipe, and numpy, try to change python interpreter version, 
-
-Install a python version between 3.7 and 3.10, for me I used 3.10.2
-
-Then, check versions using py -0
-
-Now run py -3.10 -m venv venv
-
-Activate venv and try to run
-
-IF ImportError: DLL load failed while importing _pywrap_tensorflow_internal: A dynamic link library (DLL) initialization routine failed.       
-
-
-Failed to load the native TensorFlow runtime.
-See https://www.tensorflow.org/install/errors for some common causes and solutions.
-If you need help, create an issue at https://github.com/tensorflow/tensorflow/issues and include the entire stack trace above this error message.
-
-Uninstall tensorflow
-
-Try pip install tensorflow==2.10
-
-NEW REDO 
-python -m venv venv312 ( I am using python version 3.12.4 )
-activate venv
-
-versions to match colab version I used for training
-pip install tensorflow==2.18.0 mediapipe==0.10.13 opencv-python
-
-pip install PyQt5 pyqtgraph pyserial
 
 ## Running the Program
 python main.py
