@@ -68,6 +68,7 @@ def detectPose(media_selection, testFile, pose):
         
         # requested media selection is an input video
         if media_selection == 2:
+            print("Initializing video capture")
 
             #initialize videoCapture to read from video stored on computer
             cap = cv2.VideoCapture(testFile)
@@ -77,24 +78,27 @@ def detectPose(media_selection, testFile, pose):
 
             # initialize videoCapture to read from webcam
             cap = cv2.VideoCapture(0)
+            # set the video camera size
+            cap.set(3,1280)
+            cap.set(4,960)
 
         # create named window for resizing purposes
         cv2.namedWindow('Pose Detection', cv2.WINDOW_NORMAL)
         
-        # set the video camera size
-        cap.set(3,1280)
-        cap.set(4,960)
-
         if not cap.isOpened():
             ValueError("Capture could not be opened")
 
         while cap.isOpened():
+
             # read a frame
             ret, frame = cap.read()
 
             # check if frame is read properly or not
             if not ret:
                 break
+
+            #frame = cv2.resize(frame, (854, 480))
+
 
             imageRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # recoloring frame to RGB to pass to mediapipe
             imageRGB.flags.writeable = False   # flags set to false for better performace
@@ -108,7 +112,7 @@ def detectPose(media_selection, testFile, pose):
             landmarks = results.pose_landmarks
 
             if landmarks:
-                normalizedLandmarks = normalizeLandmarks(landmarks.landmark)
+                # normalizedLandmarks = normalizeLandmarks(landmarks.landmark)
 
                 # pose = classifyPose(normalizedLandmarks, poses)
 
@@ -159,21 +163,24 @@ def normalizeLandmarks(landmarks):
     return normalizedLandmarks
 
 # function to retrieve test files
-def getTestFile(mediaSelection, fileNum):
-    images = [
-        "media/images/Malik-Monk-Image1.jpg",
-        "media/images/De'Aaron-Fox-Image2.jpg"
+def getTestFile(media_selection, pose_class, file_num):
+    media = [
+        "raw_images",
+        "mp4_videos"
     ]
 
-    videos = [
-        "media/videos/Slow-Dribbling-Video1.mp4"
+    media_path = media[media_selection - 1]
+
+    pose_classes = [
+        "call",
+        "dribbling",
+        "moving",
+        "shooting"
     ]
 
-    if mediaSelection == 1:
-        return images[int(fileNum) - 1]
+    pose_path = pose_classes[int(pose_class) - 1]
 
-    if mediaSelection == 2:
-        return videos[int(fileNum) - 1]
+    return f"./media/{media_path}/{pose_path}/{pose_path}_{int(file_num):04d}.MP4"
 
 # initializing mediapipe drawing and pose class
 mp_drawing = mp.solutions.drawing_utils     # drawing utilities
@@ -186,9 +193,9 @@ media_selection = 0
 fileNum = 0
 testFile = None
 
-media_selection = input(f"\nSelect a media type to detect poses\n"
-      "1 - Pictures\n" 
-      "2 - Videos\n" 
+media_selection = input(f"\nSelect a media folder to detect poses\n"
+      "1 - Raw Images\n" 
+      "2 - MP4 Videos\n" 
       "3 - Real time using Webcam\n" 
       "Selection: ")
 
@@ -199,6 +206,8 @@ if media_selection < 1 or media_selection > 3:
     raise ValueError("Invalid selection value")
 
 if media_selection == 1:
+    """
+    
     print("\nImages Selected\n")
 
     fileNum = input(f"\nSelect the image you would like to test\n"
@@ -208,16 +217,24 @@ if media_selection == 1:
 
     testFile = getTestFile(media_selection, fileNum)
     detectPose(media_selection, testFile, pose)
-
+    """
 if media_selection == 2:
     print("\nVideos Selected\n")
     
-    fileNum = input(f"\nSelect the video you would like to test\n"
-    "1\n"
+    pose_class = input(f"\nSelect the number corresponding to the class you would like\n"
+    "1 - Call for pass\n"
+    "2 - Dribbling\n"
+    "3 - Moving without the ball\n"
+    "4 - Shooting\n"
     "Selection: ")
 
-    testFile = getTestFile(media_selection, fileNum)
-    detectPose(media_selection, testFile, pose)
+    file_num = input(f"Select the file number you want to test")
+
+    test_file = getTestFile(media_selection, pose_class, file_num)
+
+    print(f"File path: {test_file}")
+
+    detectPose(media_selection, test_file, pose)
 
 if media_selection == 3:
     print("\nWebcam Selected\n")
