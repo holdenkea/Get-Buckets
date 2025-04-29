@@ -17,6 +17,7 @@ For a full tutorial of my data collection and model building process you can vis
 
 <img width="716" alt="image" src="https://github.com/user-attachments/assets/7dca0c20-c75a-4396-9df0-0253694f9381" />
 
+* PUT DEMO VIDEO HERE *
 ## Getting Started
 
 ### Set up Virtual Environment
