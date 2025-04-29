@@ -3,6 +3,7 @@
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
+  - [Running the Program](#running-the-program)
   - [Setting up MaUWB_DW3000 Modules](#arduino-ide-setup)   
 - [Running](#running-the-program)
 - [License](#license)
@@ -13,7 +14,7 @@ Welcome to my Get Buckets repository! This project was driven by my love for the
 
 This project combines a real-time pose classifier, UWB modules for indoor positioning, and a simple UI to track, save, and visualize where on the court shots were made and missed.
 
-For a full tutorial of my data collection and model building process you can visit my [colab notebook.](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
+For a full tutorial of my data collection and model building process you can visit my [colab notebook](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
 
 ## Getting Started
 
@@ -38,7 +39,15 @@ If you encounter any of the following errors, it is most likely due to a version
   2) IF ImportError: DLL load failed while importing _pywrap_tensorflow_internal: A dynamic link library (DLL) initialization routine failed.       
 
 ### Clone the Repo
+```
+# clone the repo
+git clone <repository url>
+```
 
+### Running the Program
+```
+python src/gui/main.py
+```
 
 ### Arduino IDE Setup
   1) Install Arduino IDE
@@ -53,29 +62,25 @@ If you encounter any of the following errors, it is most likely due to a version
   4) Set Board using Tools -> Board -> ESP32 Arduino -> ESP32S3 Dev Module
   5) Plug in USB Type-C into module and machine running Arduino IDE
       - Select Tools -> Port -> (Serial Port for your connection)
-      -     
+        
 ### Setting Up Tag Module  
 This project uses one tag.
-  1) Navigate to src -> uwb -> tags -> ... and open in Arduino IDE
-  2) Verify code using the Verify Button or Sketch -> Verify/Compile (Ctrl+R)
-  3) Upload code using the Upload Button or Sketch -> Upload (Ctrl+U)
+  1) Navigate to src -> uwb -> esp32...t0 -> ... and open in Arduino IDE
+  2) Make sure the UWB index is set to 0 and that the #define is "TAG"
+  3) Verify code using the Verify Button or Sketch -> Verify/Compile (Ctrl+R)
+  4) Upload code using the Upload Button or Sketch -> Upload (Ctrl+U)
 
 ### Setting Up Anchor Modules
 This project uses three anchors.
-  1) Navigate to src -> uwb -> anchors -> ...
-  2) Verify and Upload Code.
+  1) Navigate to src -> uwb -> esp32...a0 -> ... and open in Arduino IDE
+  2) Make sure to increment the UWB index every time you upload the code to a new anchor.
+  3) Verify and Upload Code.
 
 ### Arduino IDE Serial Monitor
-Once all code is uploaded, check distance and signal strengths of tag to anchors.
+Once all code is uploaded, you can check distances and signal strengths of anchors to the tag.
   1) Navigate to Tools -> Serial Monitor
-  2)                                                                    
-
-[Manufacturer Instructions](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
-
-Clone Repository
-
-## Running the Program
-python main.py
+  2) The anchors will send distances to the tag in the form of AT+RANGE commands in the form of range:(d0,d1,d2,...)                                                                 
+For more comprehensive instructions you can view the [manufacturer instructions.](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
 
 ## License
 Apache License 2.0 
