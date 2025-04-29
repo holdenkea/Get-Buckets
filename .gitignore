@@ -2,3 +2,4 @@ venv/
 venv312/
 media/
 src/gui/__pycache__/
+.vscode/
