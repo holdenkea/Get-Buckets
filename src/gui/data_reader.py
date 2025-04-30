@@ -1,8 +1,12 @@
 from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import numpy as np
+import serial
+import serial.tools.list_ports
 
 class Data_Reader_Thread(QThread):
+
+    # MAKE SURE TO FIGURE OUT OFFSET TO MULTIPLY COORDINATES
 
     anchor_coordinates_cm = [
         (0,0),
@@ -10,39 +14,77 @@ class Data_Reader_Thread(QThread):
         (762, 1432.56)
     ]
 
+    #anchor_coordinates_cm = [
+    #   (0,0),
+    #    (91.44, 0),
+    #    (45.72, 91.44)
+    #]
+
     # tuple to return coordinates
     new_signal = pyqtSignal(tuple)
 
-    def __init__(self, file_path):
+    def __init__(self, file_path, use_serial):
         super().__init__()
         self.file_path = file_path
+        self.use_serial = use_serial
         self.running = True
         self.current_position = (None, None)
+        self.ser = None
 
+    def init_serial(self):
+        self.ser = serial.Serial(self.get_first_com(), 115200, timeout=1)
+        self.ser.reset_input_buffer()
 
+    def get_first_com(self):
+        port_list = serial.tools.list_ports.comports()
+
+        if len(port_list) <= 0:
+            print("No COM")
+            return ""
+        else:
+            print("First COM")
+            for com in port_list:
+                print(com)
+                return list(com)[0]
+            
     def run(self):
         # read toy data from the file
-        with open(self.file_path, 'r') as file:
-            print("Toy data selected for input \n")
-            try:
-                tag_position = None
+        try:
+            print(f"USE SERIAL IS {self.use_serial}")
+            if self.use_serial:
+                self.init_serial()
                 while self.running:
-                    new_position = self.read_toy_data(file)
-                    if new_position == (None, None):  
-                        break
+                    new_position = self.read_data()
 
-                    tag_position = new_position
+                    if new_position != (None, None):
+                        self.current_position = new_position
+                        print(f"NEW POSITION IS {new_position}")
+                        self.new_signal.emit(new_position)
+            else:
+                with open(self.file_path, 'r') as file:
+                    tag_position = None
+                    while self.running:
+                        # read toy data
+                        new_position = self.read_toy_data(file)
 
-                    # send data to the UI
-                    self.current_position = new_position
-                    self.new_signal.emit(tag_position)  
+                        if new_position == (None, None):  
+                            break
 
-                    time.sleep(0.2)  
+                        tag_position = new_position
 
-            except Exception as e:
-                print(f"Error {e}")
-            finally:
-                print("End of CSV file")
+                        # send data to the UI
+                        self.current_position = new_position
+                        self.new_signal.emit(tag_position)  
+
+                        # delay for visualization purposes
+                        time.sleep(0.2)  
+
+        except Exception as e:
+            print(f"Error {e}")
+        finally:
+            if self.ser and self.ser.is_open:
+                self.ser.close()
+            print("Thread finished")
 
     def get_current_position(self):
         print(f"GETTING CURRENT POSITION IN DATAREADER {self.current_position}")
@@ -51,6 +93,32 @@ class Data_Reader_Thread(QThread):
     def stop(self):
         self.running = False
         self.wait()
+
+    def read_data(self):
+        try:
+            line = self.ser.readline().decode('utf-8', errors='ignore')
+
+        except Exception as e:
+            print(f"Error reading/parsing data from UWB stream: {e}")
+            return None, None
+        
+        line = line.strip()
+        print(f"Raw data: {line}")
+        if line.startswith("RANGE:"):
+            try:
+                _, values = line.split(":")
+                d0, d1, d2 = map(float, values.split(","))
+
+                # call trilateration function here
+                xt, yt = self.perform_trilateration(d0, d1, d2, self.anchor_coordinates_cm)
+                print(f"Estimated position: ({xt}, {yt})")
+
+                return xt, yt
+            except Exception as e:
+                print(f"Error parsing serial line: {e}")
+                return None, None
+
+        return None, None
 
     def read_toy_data(self, file):
         line = file.readline()
@@ -67,7 +135,7 @@ class Data_Reader_Thread(QThread):
                     # [1] extracts the right size, or 1 index
                     # .split makes it ["d0,d1,d2", ""] and [0] returns the distances                
                     range_values = line.split("range:(")[1].split(")")[0]
-                    print(range_values)
+                    print(f"Range values {range_values}")
 
                     # this splits each value at a comma and slices the array to get first 3 items and converts to floats
                     d0, d1, d2 = map(float, range_values.split(",")[:3])
