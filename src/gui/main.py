@@ -62,7 +62,12 @@ class MyApp(QMainWindow):
         # visible coordinate range in plot
         self.plot_widget.setXRange(0, 50)
         self.plot_widget.setYRange(0, 47)
-        self.plot_widget.enableAutoRange(False)
+        
+        # test coordinate range 3x3 feet
+        #self.plot_widget.setXRange(0, 3)
+        #self.plot_widget.setYRange(0, 3)
+        
+        self.plot_widget.disableAutoRange()
 
         main_layout.addWidget(self.button_panel, stretch=1)
         main_layout.addWidget(self.plot_widget, stretch=4)
@@ -114,7 +119,9 @@ class MyApp(QMainWindow):
 
         # Start the data reading thread
         if not self.data_reader_thread:
-            self.data_reader_thread = Data_Reader_Thread('./src/uwb/python/toy.txt')
+            self.data_reader_thread = Data_Reader_Thread('./src/uwb/python/toy.txt', use_serial=False)
+            #self.data_reader_thread = Data_Reader_Thread(file_path=None, use_serial=True)
+    
             self.data_reader_thread.new_signal.connect(self.update_position)
             self.data_reader_thread.start()
 
@@ -144,6 +151,7 @@ class MyApp(QMainWindow):
 
 
     ###########################################################################################
+ 
 
     def draw_court(self):
         # half court, (x, y, width, height)
