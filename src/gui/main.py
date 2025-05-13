@@ -2,18 +2,24 @@ import sys
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QPushButton,
     QHBoxLayout, QVBoxLayout, QWidget, QGraphicsRectItem,
-    QGraphicsEllipseItem, QGraphicsLineItem, QGraphicsPathItem
+    QGraphicsEllipseItem, QGraphicsLineItem, QGraphicsPathItem,
+    QLineEdit, QLabel
 )
 
 import pyqtgraph as pg
 import numpy as np
 
-from data_reader import Data_Reader_Thread
+from uwb_reader import Data_Reader_Thread
 import pose_classifier as pc
+import beam_reader as br
 
 import threading
-
 import queue
+
+import time
+import os
+
+import random 
 
 class MyApp(QMainWindow):
     def __init__(self):
@@ -43,10 +49,21 @@ class MyApp(QMainWindow):
         self.stop_button.clicked.connect(self.stop_run)
         self.save_button.clicked.connect(self.save_run)
 
-        # Add buttons to layout
+        # wifi label fields
+        self.ip_input_label = QLabel("ESP32 IP Address:")
+        self.ip_input_field = QLineEdit()
+        self.ip_input_field.setPlaceholderText("e.g., xxx.xxx.x.x")
+
+
+        button_layout.addWidget(self.ip_input_label)
+        button_layout.addWidget(self.ip_input_field)
+
         button_layout.addWidget(self.begin_tracking_button)
         button_layout.addWidget(self.stop_button)
         button_layout.addWidget(self.save_button)
+
+        
+       
 
         # Push everything to the top
         button_layout.addStretch()
@@ -93,12 +110,21 @@ class MyApp(QMainWindow):
         # queue to hold both position and action information
         self.position_action_queue = queue.Queue()
 
+        # initialize last shot time
+        self.last_shot_time = 0
+        
         self.show()
 
-    #################################### BUTTON FUNCTIONS ####################################
+###########################################################################################
+#                               Save Run Function(s)                                      #
+###########################################################################################
+
     def save_run(self):
         print("Save Run button clicked!")
-        # TODO: Export plot data or session info to JSON, CSV, etc.
+
+###########################################################################################
+#                              Stop Run Function(s)                                       #
+###########################################################################################
 
     # stops the data reader and the cv2
     def stop_run(self):
@@ -114,21 +140,35 @@ class MyApp(QMainWindow):
         #self.save_button.setEnabled(True)
         self.begin_tracking_button.setEnabled(True)
 
-    def begin_tracking(self):
+###########################################################################################
+#                               Tracking Function(s)                                      #
+###########################################################################################
+    def begin_tracking(self):        
+        # create folder to store workout information
+        self.current_workout_txt = self.create_workout_folder()
+
         self.stop_requested = False
 
         # Start the data reading thread
         if not self.data_reader_thread:
+            esp_32_ip = self.ip_input_field.text().strip()
+            if not esp_32_ip:
+                print("Please enter a valid ESP32 IP address.")
+                return
+
+            self.br = br.Beam_Reader(esp_32_ip)
+
+            # opens a uwb reader thread which consistently updates position in gui
             self.data_reader_thread = Data_Reader_Thread('./src/uwb/python/toy.txt', use_serial=False)
             #self.data_reader_thread = Data_Reader_Thread(file_path=None, use_serial=True)
-    
             self.data_reader_thread.new_signal.connect(self.update_position)
             self.data_reader_thread.start()
 
+            # opens a pose classifier thread to open webcam as input and outputs the video
             self.pose_classifier = pc.Pose_Classifier(self, self.data_reader_thread, self.position_action_queue)
-
             classifier_thread = threading.Thread(target=self.pose_classifier.output_video_with_prediction)
             classifier_thread.start()
+
 
     # tracking helper function to plot position
     def update_position(self, position):
@@ -136,23 +176,86 @@ class MyApp(QMainWindow):
         print(f"Tag position: {position}")
 
         if not self.position_action_queue.empty():
+
+            # get current action from queue
             action, position_at_action = self.position_action_queue.get()
             print(f"CURRENT ACTION IS {action, position_at_action}")
+            
+            current_time = time.time()
             if action == "shooting":
-                print("Shooting detected")
 
-                # add shooting point to scatter item
-                self.scatter_item_shooting.addPoints([position_at_action[0]], [position_at_action[1]], symbol='o', size=10, pen=pg.mkPen(color='green'), brush=pg.mkBrush(color='green'))
-        
-        
+                # tune the shot delay here if needed in case shots tracked across multiple windows
+                # right now it is at a "window" of 2 seconds per shooting motion
+                if current_time - self.last_shot_time > 2:
+                    print("Shooting detected")
+
+                    # call helper function to check shot status in the background, keeping update position running
+                    threading.Thread(target=self.shot_check_background, args=(position_at_action,), daemon=True).start()
+
+                    self.last_shot_time = current_time
+
+                else: 
+                    print("ignored duplicate shooting action")
+                
         self.scatter_item.clear()
         self.scatter_item.addPoints([position[0]], [position[1]])
 
+    def shot_check_background(self, position_at_action):
+        # run update loop in the background, pass duration to check shot made
+        self.br.update_loop(2)
+
+        # call function to check if shot is made
+        shot_made = self.br.get_shot_status()
+
+        if shot_made:
+            print("SHOT MADE")
+            self.scatter_item_shooting.addPoints([position_at_action[0]], [position_at_action[1]], 
+                                                 symbol='o', size=10, pen=pg.mkPen(color='green'), brush=pg.mkBrush(color='green'))
+        else:
+            print("SHOT MISSED")
+            self.scatter_item_shooting.addPoints([position_at_action[0]], [position_at_action[1]], 
+                                                 symbol='x', size=10, pen=pg.mkPen(color='red'), brush=pg.mkBrush(color='red'))
+
+        # add point and make or miss to text file
+        with open(self.current_workout_txt, "a") as f:
+            print(f"ADDING shot made: {shot_made}, TO FILE")
+            f.write(f"Position: ({[position_at_action[0]], [position_at_action[1]]}), Make: {shot_made}\n")
 
 
-    ###########################################################################################
+    def create_workout_folder(self):
+
+        # if /src/gui/workouts doesn't exist, create folder called workouts
+        workouts_path = os.path.join("src", "gui", "workouts")
+
+        if not os.path.exists(workouts_path):
+            os.makedirs(workouts_path)
+            print("creating workouts folder")
+
+        # count number of existing workout folders (filtering only directories starting with "workout_")
+        existing_folders = [f for f in os.listdir(workouts_path) 
+                            if os.path.isdir(os.path.join(workouts_path, f)) and f.startswith("workout_")]
+        num_workouts = len(existing_folders)
  
+        # create folder called workout_{size + 1}
+        workout_name = f"workout_{num_workouts + 1}"
+        current_workout_path = os.path.join(workouts_path, workout_name)
+        os.makedirs(current_workout_path)
 
+        # create text file for current workout
+        current_workout_txt = os.path.join(current_workout_path, f"{workout_name}.txt")
+        with open(current_workout_txt, "w") as f:
+            f.write("")  # Create empty file
+
+        print(f"Created {current_workout_txt}")
+        
+        # return path to workout text file
+        return current_workout_txt
+
+
+###########################################################################################
+#                             Court Drawing Function(s)                                   #
+###########################################################################################
+ 
     def draw_court(self):
         # half court, (x, y, width, height)
         boundary = QGraphicsRectItem(0, 0, 50, 47)

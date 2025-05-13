@@ -51,6 +51,8 @@ class Data_Reader_Thread(QThread):
         # read toy data from the file
         try:
             print(f"USE SERIAL IS {self.use_serial}")
+
+            # if use serial is set to true read from serial input
             if self.use_serial:
                 self.init_serial()
                 while self.running:
@@ -60,6 +62,8 @@ class Data_Reader_Thread(QThread):
                         self.current_position = new_position
                         print(f"NEW POSITION IS {new_position}")
                         self.new_signal.emit(new_position)
+
+            # if use serial is false, read from toy data
             else:
                 with open(self.file_path, 'r') as file:
                     tag_position = None
