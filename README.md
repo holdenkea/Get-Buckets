@@ -90,6 +90,8 @@ esp32 boards manager
 
 board arduino nano ESP32
 
+9600 baud
+
 ## License
 Apache License 2.0 
 
