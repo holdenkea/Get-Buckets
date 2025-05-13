@@ -4,7 +4,8 @@
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
   - [Running the Program](#running-the-program)
-  - [Setting up MaUWB_DW3000 Modules](#arduino-ide-setup)   
+  - [Setting up MaUWB_DW3000 Modules](#arduino-ide-setup)
+  - [Setting up Arduino Nano ESP32 and Break Beam Sensors](#arduino-nano) 
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
@@ -83,6 +84,11 @@ Once all code is uploaded, you can check distances and signal strengths of ancho
   1) Navigate to Tools -> Serial Monitor
   2) The anchors will send distances to the tag in the form of AT+RANGE commands in the form of range:(d0,d1,d2,...)                                                                 
 For more comprehensive instructions you can view the [manufacturer instructions.](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
+
+### Arduino Nano
+esp32 boards manager
+
+board arduino nano ESP32
 
 ## License
 Apache License 2.0 
