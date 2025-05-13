@@ -29,6 +29,10 @@ class Beam_Reader:
         while time.time() - start_time < duration:
             sensor_value = self.read_sensor()
 
+            if sensor_value is None:
+                print("ESP32 not responding.")
+                break
+
             if sensor_value == 0:
                 was_beam_broken = True
                 break

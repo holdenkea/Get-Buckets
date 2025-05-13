@@ -1,57 +1,69 @@
 #include <WiFi.h>
 
-const char* ssid = "SSIDHERE";
-const char* password = "PASSWORDHERE";
+// wifi credentials here
+const char* ssid = "";
+const char* password = "";
 
+// esp32 connected to WiFi and starts web server on port 80
 WiFiServer server(80);
 
 void setup() {
-    
+    delay(1000);
+
     Serial.begin(9600);
-    pinMode(5, INPUT_PULLUP);   // sensor 1
+    Serial.print("HERE");
+
+    pinMode(5, INPUT_PULLUP);   // sensor 1 on pin 5
 
     WiFi.begin(ssid, password);
     Serial.print("Connecting to wifi");
 
-    while (Wifi.status() != WL_CONNECTED){
+    while (WiFi.status() != WL_CONNECTED){
         delay(500);
-        Serial.print(".")
+        Serial.print(".");
     }
 
-    Serial.println("\nConnected!");
+    Serial.println("WiFI Connected!");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
 
-    server.being();
+    server.begin();
 }
 
 void loop() {
-    WiFiClient client = server.available();
+    WiFiClient client = server.accept();
+    
     if (client){
-        Serial.println("new client connected.");
+        Serial.println("New client.");
         String current_line = "";
 
         while (client.connected()) {
             if (client.available()) {
                 char c = client.read();
-
+                Serial.write(c);
                 if (c == '\n') {
-                    //end of HTTP request
-                    int sensor_1 = digitalRead(5);
 
-                    client.println("HTTP/1.1 200 OK");
-                    client.println("Content-Type: application/json");
-                    client.println();
-
-                    client.println("{\"sensor_1\": " + String(sensor_1) + "}");
-
-                    break;
+                    if (current_line.length() == 0){
+                      //end of HTTP request
+                      int sensor_1 = digitalRead(5);
+  
+                      client.println("HTTP/1.1 200 OK");
+                      client.println("Content-Type: application/json");
+                      client.println();
+  
+                      client.println("{\"sensor_1\": " + String(sensor_1) + "}");
+  
+                      break;
+                    }
+                    else {
+                      current_line = "";
+                    }
+                    
                 }
             }
         }
-        delay(1);
         client.stop();
-        Serial.println("client disconnected")
+        Serial.println("Client disconnected");
     }
 
 }
