@@ -3,3 +3,4 @@ venv312/
 media/
 src/gui/__pycache__/
 .vscode/
+serc/gui/workouts/

@@ -1,0 +1,33 @@
+main.py
+
+    WORKOUT RECAP
+        - add points to some sort of workout file to associate makes and misses
+
+    BREAK BEAM SENSOR
+        - replace break beam mock logic with real implementation of break beam sensor 
+        connected to the rebounder
+        - possibly two sensors to mitigate false readings
+
+    WORKOUT RECAP STATISTICS
+        - add statistics such as shots taken, shots made, FG %
+        - if possible, compute "zones" that shots were taken from 
+
+uwb/esp32
+
+    TAG
+        - convert tag logic to transmit distances over WIFI along with serial
+
+beam/
+
+    make a beam class to hold the true or false values
+
+
+    BEAM
+        - make break beam logic using the arduino uno
+        - will pass true or false through serial based on if BOTH beams break
+        - once this is working, convert to wifi communication
+    
+pose_classifier.py
+
+data_reader.py
+
