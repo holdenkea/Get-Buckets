@@ -52,7 +52,7 @@ class MyApp(QMainWindow):
         # wifi label fields
         self.ip_input_label = QLabel("ESP32 IP Address:")
         self.ip_input_field = QLineEdit()
-        self.ip_input_field.setPlaceholderText("e.g., xxx.xxx.x.x")
+        self.ip_input_field.setPlaceholderText("e.g., xxx.xxx.x.xx")
 
 
         button_layout.addWidget(self.ip_input_label)
@@ -152,6 +152,8 @@ class MyApp(QMainWindow):
         # Start the data reading thread
         if not self.data_reader_thread:
             esp_32_ip = self.ip_input_field.text().strip()
+            print(f"STRIPPED IP IS {esp_32_ip}")
+            
             if not esp_32_ip:
                 print("Please enter a valid ESP32 IP address.")
                 return
@@ -185,8 +187,8 @@ class MyApp(QMainWindow):
             if action == "shooting":
 
                 # tune the shot delay here if needed in case shots tracked across multiple windows
-                # right now it is at a "window" of 2 seconds per shooting motion
-                if current_time - self.last_shot_time > 2:
+                # right now it is at a "window" of 4 seconds per shooting motion
+                if current_time - self.last_shot_time > 4:
                     print("Shooting detected")
 
                     # call helper function to check shot status in the background, keeping update position running
@@ -201,8 +203,9 @@ class MyApp(QMainWindow):
         self.scatter_item.addPoints([position[0]], [position[1]])
 
     def shot_check_background(self, position_at_action):
-        # run update loop in the background, pass duration to check shot made
-        self.br.update_loop(2)
+
+        # run update loop in the background, will read make or miss for *duration* seconds for a break in the beam
+        self.br.update_loop(4)
 
         # call function to check if shot is made
         shot_made = self.br.get_shot_status()
