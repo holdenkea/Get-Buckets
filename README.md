@@ -5,8 +5,8 @@
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
   - [Running the Program](#running-the-program)
-  - [Setting up MaUWB_DW3000 Modules](#setting-up-mauwb-dw3000-modules)
-  - [Setting up Arduino Nano ESP32](#setting-up-arduino-nano-esp32) 
+  - [Setting up UWB Modules](#setting-up-uwb-modules)
+  - [Setting up Arduino Nano](#setting-up-arduino-nano) 
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
@@ -54,7 +54,7 @@ git clone <repository url>
 python src/gui/main.py
 ```
 
-### Setting up MaUWBDW3000 Modules
+### Setting up UWB Modules
   1) Install Arduino IDE
       - V1.8.10/V1.8.19
   2) Go to Tools-> Board -> Boards Manager -> Search and Install ESP32 Board Package 
@@ -87,21 +87,33 @@ Once all code is uploaded, you can check distances and signal strengths of ancho
   2) The anchors will send distances to the tag in the form of AT+RANGE commands in the form of range:(d0,d1,d2,...)                                                                 
 For more comprehensive instructions you can view the [manufacturer instructions.](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
 
-### Arduino Nano
-esp32 boards manager
+### Setting up Arduino Nano
+  1) Open a new Sketch in the Arduino IDE
+  2) Use the same ESP32 Board Package by Espressif Systems
+  3) Select the "Arduino Nano ESP32" Board
+  4) Specify a Baud rate of 9600
+  5) Plug in usb to machine
+  6) Navigate to src -> beam -> esp32nano -> esp32nano.ino
+  7) Replace ssid and password with your credentials
+  8) Verify and Upload Code
+  9) Use Arduino ide Serial Monitor to see and copy the IP address for the ESP32 module
+  10) Use the found IP address as input in the GUI
 
-board arduino nano ESP32
-
-9600 baud
+### Break Beam Sensor Setup
+  1) Comes with 
 
 ## License
 Apache License 2.0 
 
 ## Acknowledgements
-Links to revisit:
+Product Links:
 
-- [Module Used](https://www.makerfabs.com/mauwb-esp32s3-uwb-module.html)
+- [UWB Module](https://www.makerfabs.com/mauwb-esp32s3-uwb-module.html)
 - [Makerfabs Github for Modules](https://github.com/Makerfabs/MaUWB_ESP32S3-with-STM32-AT-Command)
 - [Makerfabs Wiki](https://wiki.makerfabs.com/MaUWB_ESP32S3%20UWB%20module.html)
-- [UWB Positioning w/ Python](https://wiki.makerfabs.com/UWB%20positioning%20development%20with%20python.html)
+
+- [Arduino Nano ESP32](https://www.amazon.com/dp/B0C947C9QS?ref=ppx_yo2ov_dt_b_fed_asin_title)
+- [Break Beam Sensor](https://www.amazon.com/dp/B09V76Z4CB?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1)
+- [Portable Battery Packs](https://www.amazon.com/dp/B094Y1R46V?ref=ppx_yo2ov_dt_b_fed_asin_title)
+- [Basketball Chute](https://www.amazon.com/dp/B0D6W4CCYZ?ref=ppx_yo2ov_dt_b_fed_asin_title)
 
