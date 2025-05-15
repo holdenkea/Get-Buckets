@@ -1,11 +1,12 @@
 ## Table of Contents
 - [About](#about)
+- [Demo](#demo-video)
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
   - [Running the Program](#running-the-program)
-  - [Setting up MaUWB_DW3000 Modules](#arduino-ide-setup)
-  - [Setting up Arduino Nano ESP32 and Break Beam Sensors](#arduino-nano) 
+  - [Setting up MaUWB_DW3000 Modules](#setting-up-mauwb-dw3000-modules)
+  - [Setting up Arduino Nano ESP32](#setting-up-arduino-nano-esp32) 
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
@@ -18,7 +19,8 @@ For a full tutorial of my data collection and model building process you can vis
 
 <img width="716" alt="image" src="https://github.com/user-attachments/assets/7dca0c20-c75a-4396-9df0-0253694f9381" />
 
-* PUT DEMO VIDEO HERE *
+## Demo Video
+
 ## Getting Started
 
 ### Set up Virtual Environment
@@ -27,7 +29,7 @@ For a full tutorial of my data collection and model building process you can vis
 python -m venv venv312 # (I am using python version 3.12.4)
 
 # activate venv
-.\venv\Scripts\Activate
+.\venv312\Scripts\Activate
 
 # download dependencies using pip
 pip install tensorflow==2.18.0 mediapipe==0.10.13 opencv-python
@@ -52,7 +54,7 @@ git clone <repository url>
 python src/gui/main.py
 ```
 
-### Arduino IDE Setup
+### Setting up MaUWBDW3000 Modules
   1) Install Arduino IDE
       - V1.8.10/V1.8.19
   2) Go to Tools-> Board -> Boards Manager -> Search and Install ESP32 Board Package 
