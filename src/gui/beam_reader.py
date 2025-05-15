@@ -21,12 +21,14 @@ class Beam_Reader:
         return None
 
     # function to check if the beams were broken for a certain period of time
-    def update_loop(self, duration):
+    # this only returns true if beam is broken, and will go through the entire duration polling and checking
+    # if no beam broken, it will exhaust while loop and return original False variable
+    def update_loop(self, shot_duration):
         start_time = time.time()
 
         was_beam_broken = False
         
-        while time.time() - start_time < duration:
+        while time.time() - start_time < shot_duration:
             sensor_value = self.read_sensor()
 
             if sensor_value is None:
@@ -36,7 +38,9 @@ class Beam_Reader:
             if sensor_value == 0:
                 was_beam_broken = True
                 break
-            time.sleep(0.1)
+
+            # small delay
+            time.sleep(0.005)
 
         with self.lock:
             self.made_shot = was_beam_broken

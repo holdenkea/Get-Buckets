@@ -6,12 +6,16 @@ from PyQt5.QtWidgets import (
     QLineEdit, QLabel
 )
 
+from PyQt5.QtGui import QColor
+from PyQt5.QtCore import QTimer, QEvent, pyqtSignal
+
 import pyqtgraph as pg
 import numpy as np
 
 from uwb_reader import Data_Reader_Thread
 import pose_classifier as pc
 import beam_reader as br
+import gui_overlay as go
 
 import threading
 import queue
@@ -22,6 +26,10 @@ import os
 import random 
 
 class MyApp(QMainWindow):
+
+    # signal for gui overlay
+    clear_overlay_signal = pyqtSignal()
+
     def __init__(self):
         super().__init__()
 
@@ -54,16 +62,12 @@ class MyApp(QMainWindow):
         self.ip_input_field = QLineEdit()
         self.ip_input_field.setPlaceholderText("e.g., xxx.xxx.x.xx")
 
-
+        # buttons added here
         button_layout.addWidget(self.ip_input_label)
         button_layout.addWidget(self.ip_input_field)
-
         button_layout.addWidget(self.begin_tracking_button)
         button_layout.addWidget(self.stop_button)
         button_layout.addWidget(self.save_button)
-
-        
-       
 
         # Push everything to the top
         button_layout.addStretch()
@@ -100,7 +104,6 @@ class MyApp(QMainWindow):
         self.scatter_item_shooting = pg.ScatterPlotItem(symbol='o', size=10, pen=pg.mkPen(color='green'), brush=pg.mkBrush(color='green'))
         self.plot_widget.addItem(self.scatter_item_shooting)
 
-
         # initialize data reader to None until the button is pressed
         self.data_reader_thread = None
 
@@ -115,6 +118,25 @@ class MyApp(QMainWindow):
         
         self.show()
 
+        # OVERLAY code
+        # connect signal to clear function
+        self.clear_overlay_signal.connect(lambda: self.set_gui_color('CLEAR'))
+
+        # color overlay from gui_overlay
+        self.overlay = go.ColorOverlay(self.centralWidget())
+        self.overlay.resize(self.centralWidget().size())
+        self.overlay.raise_()
+        self.overlay.show()
+
+        # tracks window resizing
+        self.centralWidget().installEventFilter(self)
+
+        self.current_color = 'CLEAR'
+
+    def eventFilter(self, source, event):
+        if event.type() == QEvent.Resize and source == self.centralWidget():
+            self.overlay.resize(source.size())
+        return super().eventFilter(source, event)
 ###########################################################################################
 #                               Save Run Function(s)                                      #
 ###########################################################################################
@@ -151,6 +173,8 @@ class MyApp(QMainWindow):
 
         # Start the data reading thread
         if not self.data_reader_thread:
+
+            # ip address from input field in UI
             esp_32_ip = self.ip_input_field.text().strip()
             print(f"STRIPPED IP IS {esp_32_ip}")
             
@@ -174,6 +198,10 @@ class MyApp(QMainWindow):
 
     # tracking helper function to plot position
     def update_position(self, position):
+
+        # duration of shooting window (seconds)
+        shot_duration = 4
+
         # update the UI with the new position
         print(f"Tag position: {position}")
 
@@ -185,46 +213,61 @@ class MyApp(QMainWindow):
             
             current_time = time.time()
             if action == "shooting":
+                
+                # set gui to yellow
+                self.set_gui_color('YELLOW')
 
                 # tune the shot delay here if needed in case shots tracked across multiple windows
-                # right now it is at a "window" of 4 seconds per shooting motion
-                if current_time - self.last_shot_time > 4:
+                if current_time - self.last_shot_time > shot_duration:
                     print("Shooting detected")
 
                     # call helper function to check shot status in the background, keeping update position running
-                    threading.Thread(target=self.shot_check_background, args=(position_at_action,), daemon=True).start()
+                    threading.Thread(target=self.shot_check_background, args=(position_at_action, shot_duration), daemon=True).start()
 
                     self.last_shot_time = current_time
 
                 else: 
                     print("ignored duplicate shooting action")
-                
+
+            else: 
+                if self.current_color != 'CLEAR':
+                    self.set_gui_color('CLEAR')
+            
         self.scatter_item.clear()
         self.scatter_item.addPoints([position[0]], [position[1]])
 
-    def shot_check_background(self, position_at_action):
+    def shot_check_background(self, position_at_action, shot_duration):
 
-        # run update loop in the background, will read make or miss for *duration* seconds for a break in the beam
-        self.br.update_loop(4)
+        # run update loop in the background, will set class variable to true if beam was broken
+        # stays at false if entire duration is exhausted
+        self.br.update_loop(shot_duration)
 
-        # call function to check if shot is made
+        # call function to check if shot is made (class variable initialize to true)
         shot_made = self.br.get_shot_status()
 
         if shot_made:
             print("SHOT MADE")
+
+            # set gui to green
+            self.set_gui_color('GREEN')
+
             self.scatter_item_shooting.addPoints([position_at_action[0]], [position_at_action[1]], 
                                                  symbol='o', size=10, pen=pg.mkPen(color='green'), brush=pg.mkBrush(color='green'))
         else:
             print("SHOT MISSED")
+
+            # set gui to red
+            self.set_gui_color('RED')
+
             self.scatter_item_shooting.addPoints([position_at_action[0]], [position_at_action[1]], 
                                                  symbol='x', size=10, pen=pg.mkPen(color='red'), brush=pg.mkBrush(color='red'))
-
         # add point and make or miss to text file
         with open(self.current_workout_txt, "a") as f:
             print(f"ADDING shot made: {shot_made}, TO FILE")
             f.write(f"Position: ({[position_at_action[0]], [position_at_action[1]]}), Make: {shot_made}\n")
 
-
+        #return shot_made 
+    
     def create_workout_folder(self):
 
         # if /src/gui/workouts doesn't exist, create folder called workouts
@@ -254,7 +297,26 @@ class MyApp(QMainWindow):
         # return path to workout text file
         return current_workout_txt
 
+    def set_gui_color(self, selected_color):
+        if selected_color == 'RED':
+            self.overlay.set_overlay_color(QColor(255, 0, 0, 100))
+            self.current_color = 'RED'
 
+            QTimer.singleShot(500, lambda: self.clear_overlay_signal.emit())
+
+        elif selected_color == 'GREEN':
+            self.overlay.set_overlay_color(QColor(0, 255, 0, 100)) 
+            self.current_color = 'GREEN'
+            QTimer.singleShot(6000, lambda: self.clear_overlay_signal.emit())
+
+        elif selected_color == 'YELLOW':
+            self.overlay.set_overlay_color(QColor(255, 255, 0, 100)) 
+            self.current_color = 'YELLOW'
+
+        elif selected_color == 'CLEAR':
+            self.overlay.set_overlay_color(QColor(0, 0, 0, 0))
+            self.current_color = 'CLEAR'
+        
 ###########################################################################################
 #                             Court Drawing Function(s)                                   #
 ###########################################################################################
@@ -376,3 +438,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MyApp()
     sys.exit(app.exec_())
+
+
+
