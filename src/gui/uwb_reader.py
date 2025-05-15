@@ -15,9 +15,16 @@ class Data_Reader_Thread(QThread):
     ]
 
     #anchor_coordinates_cm = [
-    #   (0,0),
+    #    (0,0),
     #    (91.44, 0),
     #    (45.72, 91.44)
+    #]
+
+    # with OFFSET for testing
+    #anchor_coordinates_cm = [
+    #    (0,0),
+    #    (121, 0),
+    #    (75, 121)
     #]
 
     # tuple to return coordinates

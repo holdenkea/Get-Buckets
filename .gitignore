@@ -4,3 +4,4 @@ media/
 src/gui/__pycache__/
 .vscode/
 src/gui/workouts/
+src/gui/todo.txt

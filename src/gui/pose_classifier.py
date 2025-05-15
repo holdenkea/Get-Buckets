@@ -210,7 +210,7 @@ class Pose_Classifier:
 
             # Show the frame with the prediction overlay in real-time
             cv2.imshow("Video", frame)
-            print(f"Prediction for this window: {self.action}")
+            #print(f"Prediction for this window: {self.action}")
 
             # Check for key press to exit video playback early
             if cv2.waitKey(1) & 0xFF == ord('q') or self.app_instance.stop_requested:  # Press 'q' to quit
