@@ -1,6 +1,6 @@
 ## Table of Contents
 - [About](#about)
-- [Featured Images](#featured images)
+- [Featured Images](#featured-images)
 - [Demo](#demo-video)
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
@@ -20,6 +20,7 @@ This project combines a real-time pose classifier, UWB modules for indoor positi
 For a full tutorial of my data collection and model building process you can visit my [colab notebook](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
 
 <img width="716" alt="image" src="https://github.com/user-attachments/assets/7dca0c20-c75a-4396-9df0-0253694f9381" />
+## Featured Images
 
 ## Demo Video
 
