@@ -1,12 +1,14 @@
 ## Table of Contents
 - [About](#about)
+- [Featured Images](#featured images)
 - [Demo](#demo-video)
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
   - [Running the Program](#running-the-program)
   - [Setting up UWB Modules](#setting-up-uwb-modules)
-  - [Setting up Arduino Nano](#setting-up-arduino-nano) 
+  - [Setting up Arduino Nano](#setting-up-arduino-nano)
+  - [Break Beam Sensor and Basketball Chute](#break-beam-sensor-and-basketball-chute)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
@@ -23,7 +25,7 @@ For a full tutorial of my data collection and model building process you can vis
 
 ## Getting Started
 
-### Set up Virtual Environment
+### Setting up Virtual Environment
 ```
 # initialize virtual environment
 python -m venv venv312 # (I am using python version 3.12.4)
@@ -99,8 +101,13 @@ For more comprehensive instructions you can view the [manufacturer instructions.
   9) Use Arduino ide Serial Monitor to see and copy the IP address for the ESP32 module
   10) Use the found IP address as input in the GUI
 
-### Break Beam Sensor Setup
-  1) Comes with 
+### Break Beam Sensor and Basketball Chute
+  1) Break beam sensor has transmitter and reciever sides
+  2) Reciever side wired to Arduino Nano Pin 5 and Ground
+  3) Power drawn from 5v battery pack
+  4) Beam breaks communicated over wifi through Arduino Nano ESP32
+
+
 
 ## License
 Apache License 2.0 
