@@ -1,7 +1,6 @@
 ## Table of Contents
 - [About](#about)
-- [Featured Images](#featured-images)
-- [Demo](#demo-video)
+- [Components and Demo Videos](#components-and-demo-videos)
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
@@ -21,9 +20,7 @@ For a full tutorial of my data collection and model building process you can vis
 
 <img width="716" alt="image" src="https://github.com/user-attachments/assets/7dca0c20-c75a-4396-9df0-0253694f9381" />
 
-## Featured Images
-
-## Demo Video
+## Components and Demo Videos
 
 ## Getting Started
 
