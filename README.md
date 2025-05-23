@@ -3,8 +3,8 @@
 - [Components and Demo Videos](#components-and-demo-videos)
   - [Real Time Pose Detection](#real-time-pose-detection)
   - [Indoor Localization](#indoor-localization)
-  - [Break Beam Sensor](#break-beam-sensor)
   - [User Interface](#user-interface)   
+  - [Break Beam Sensor](#break-beam-sensor)
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
@@ -25,24 +25,24 @@ For a recap of my data collection and model building process you can visit my [c
 ## Components and Demo Videos
 
 ### Real Time Pose Detection
-This pose detection model is able to classify three actions, **shooting, dribbling, and idling.**
+This pose detection model is able to classify three actions, **shooting, dribbling, and idling.** Below is a short demo of all poses being classified.
 
 https://github.com/user-attachments/assets/2ecfba94-ef01-4c8c-9fa6-bfedd1385fa7
 
-Picture of Shooting 
-
-Picture of Dribbling
-
-Picture of Idling
-
 ### Indoor Localization
-Indoor positioning is determined by the tag module's location within the three anchor module.
+Indoor positioning is determined by the tag's location within the three anchor modules. These anchor modules will be placed at the bottom left, bottom right, and middle of the halfcourt in real life.
 
-### Break Beam Sensor
-An infrared transmitter and reciever is attached to a basketball rebounding chute, and when the beam is broken by the basketball, a "make" is recorded, if the beam doesn't break within a set amount of time, a "miss" is recorded.
+![uwb_picture](https://github.com/user-attachments/assets/4792a808-eb3c-4941-b67a-9fde76d54bdf)
+
+The UWB modules will individually send their distances to the tag, and the tag will add these distances to a single "RANGE" serial output, it looks like RANGE(d0,d1,d2). We can then use these distances to estimate the x,y position of the tag. Below is a generalized visual of the anchor-tag layout.
+
+![trilateration_visual](https://github.com/user-attachments/assets/4ae3ac48-124b-445a-bb6e-62d961f126ec)
 
 ### User Interface
 The interface allows a user to start and end a workout, visualize the tag's location in real time, and see made and missed shots and their location in real time. I will later implement a recap with things such as 3pt%, FG%, etc.
+
+### Break Beam Sensor
+An infrared transmitter and reciever is attached to a basketball rebounding chute, and when the beam is broken by the basketball, a "make" is recorded, if the beam doesn't break within a set amount of time, a "miss" is recorded.
 
 ## Getting Started
 
