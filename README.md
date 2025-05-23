@@ -27,6 +27,14 @@ For a recap of my data collection and model building process you can visit my [c
 ### Real Time Pose Detection
 This pose detection model is able to classify three actions, **shooting, dribbling, and idling.**
 
+https://github.com/user-attachments/assets/2ecfba94-ef01-4c8c-9fa6-bfedd1385fa7
+
+Picture of Shooting 
+
+Picture of Dribbling
+
+Picture of Idling
+
 ### Indoor Localization
 Indoor positioning is determined by the tag module's location within the three anchor module.
 
