@@ -28,7 +28,7 @@ This project combines a real-time pose classifier, UWB modules for indoor positi
 
 For a recap of my data collection and model building process you can visit my [colab notebook](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
 
-If you want to skip the components section and see the full demo video, see [Demo Video](#demo-video).
+If you want to skip the components section and see the full demo video, see this section. [Demo Video](#demo-video).
 
 ## Components and Demo Videos
 
