@@ -47,10 +47,20 @@ The UWB modules will individually send their distances to the tag, and the tag w
 ![trilateration_visual](https://github.com/user-attachments/assets/4ae3ac48-124b-445a-bb6e-62d961f126ec)
 
 ### User Interface
-The interface allows a user to start and end a workout, visualize the tag's location in real time, and see made and missed shots and their location in real time. I will later implement a recap with things such as 3pt%, FG%, etc.
+The interface allows a user to start and end a workout, visualize the tag's location in real time, and see made and missed shots and their location in real time. I will later implement a recap with workout statistics such as 3pt%, FG%, etc.
+
+(SCREENSHOT OF UI WITH MADE AND MISSED SHOTS)
 
 ### Break Beam Sensor
 An infrared transmitter and reciever is attached to a basketball rebounding chute, and when the beam is broken by the basketball, a "make" is recorded, if the beam doesn't break within a set amount of time, a "miss" is recorded.
+
+![IMG_1891](https://github.com/user-attachments/assets/75fed232-4ea6-44c3-a5af-388bf2b7801a)
+
+![Screenshot 2025-05-23 161814](https://github.com/user-attachments/assets/1f848b24-15a7-4d93-bf97-3261cabadfdb)
+
+(BRIEF VIDEO OF SHOOTING AND BREAK BEAM MAKE)
+
+(BRIEF VIDEO OF SHOOTING AND BREAK BEAM MISS)
 
 ## Demo Video
 (PASTE YOUTUBE URL HERE)
