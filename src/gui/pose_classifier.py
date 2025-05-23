@@ -15,10 +15,10 @@ class Pose_Classifier:
         self.pose_videos = mp.solutions.pose.Pose(static_image_mode=False, min_detection_confidence=0.50, min_tracking_confidence=0.50)
 
         # using the best models from the google colab research 
-        self.final_shooting_model = tf.keras.models.load_model("src/models/FINAL_best_shooting_model.h5")
-        self.final_movement_model = tf.keras.models.load_model("src/models/FINAL_best_movement_model.h5")
+        self.final_shooting_model = tf.keras.models.load_model("src/models/new_FINAL_best_shooting_model.h5")
+        self.final_movement_model = tf.keras.models.load_model("src/models/new_FINAL_best_movement_model.h5")
 
-        # predicts every 50 frames with an overlap of 25 frames
+        # predicts every window_size frames with an overlap of overlap frames
         self.window_size = 60
         self.overlap = 20
         self.stride = self.window_size - self.overlap

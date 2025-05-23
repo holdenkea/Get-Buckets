@@ -28,7 +28,7 @@ import random
 class MyApp(QMainWindow):
 
     # signal for gui overlay
-    clear_overlay_signal = pyqtSignal()
+    set_color_signal = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -60,7 +60,7 @@ class MyApp(QMainWindow):
         # wifi label fields
         self.ip_input_label = QLabel("ESP32 IP Address:")
         self.ip_input_field = QLineEdit()
-        self.ip_input_field.setPlaceholderText("e.g., xxx.xxx.x.xx")
+        self.ip_input_field.setPlaceholderText("xxx.xxx.x.xx")
 
         # buttons added here
         button_layout.addWidget(self.ip_input_label)
@@ -85,8 +85,8 @@ class MyApp(QMainWindow):
         self.plot_widget.setYRange(0, 47)
         
         # test coordinate range 3x3 feet
-        #self.plot_widget.setXRange(0, 3)
-        #self.plot_widget.setYRange(0, 3)
+        #self.plot_widget.setXRange(0, 10)
+        #self.plot_widget.setYRange(0, 10)
         
         self.plot_widget.disableAutoRange()
 
@@ -119,8 +119,10 @@ class MyApp(QMainWindow):
         self.show()
 
         # OVERLAY code
-        # connect signal to clear function
-        self.clear_overlay_signal.connect(lambda: self.set_gui_color('CLEAR'))
+        # connect signal to lambda function so that in set_gui_color,
+        # the gui can be set to clear after a delay WITHOUT disrupting other threads
+        # SINCE QTimer.singleShot can only be called from the main thread
+        self.set_color_signal.connect(self.set_gui_color)
 
         # color overlay from gui_overlay
         self.overlay = go.ColorOverlay(self.centralWidget())
@@ -186,7 +188,7 @@ class MyApp(QMainWindow):
 
             # opens a uwb reader thread which consistently updates position in gui
             self.data_reader_thread = Data_Reader_Thread('./src/uwb/python/toy.txt', use_serial=False)
-            #self.data_reader_thread = Data_Reader_Thread(file_path=None, use_serial=True)
+            # self.data_reader_thread = Data_Reader_Thread(file_path=None, use_serial=True)
             self.data_reader_thread.new_signal.connect(self.update_position)
             self.data_reader_thread.start()
 
@@ -229,9 +231,6 @@ class MyApp(QMainWindow):
                 else: 
                     print("ignored duplicate shooting action")
 
-            else: 
-                if self.current_color != 'CLEAR':
-                    self.set_gui_color('CLEAR')
             
         self.scatter_item.clear()
         self.scatter_item.addPoints([position[0]], [position[1]])
@@ -249,7 +248,7 @@ class MyApp(QMainWindow):
             print("SHOT MADE")
 
             # set gui to green
-            self.set_gui_color('GREEN')
+            self.set_color_signal.emit('GREEN')
 
             self.scatter_item_shooting.addPoints([position_at_action[0]], [position_at_action[1]], 
                                                  symbol='o', size=10, pen=pg.mkPen(color='green'), brush=pg.mkBrush(color='green'))
@@ -257,7 +256,7 @@ class MyApp(QMainWindow):
             print("SHOT MISSED")
 
             # set gui to red
-            self.set_gui_color('RED')
+            self.set_color_signal.emit('RED')
 
             self.scatter_item_shooting.addPoints([position_at_action[0]], [position_at_action[1]], 
                                                  symbol='x', size=10, pen=pg.mkPen(color='red'), brush=pg.mkBrush(color='red'))
@@ -302,12 +301,17 @@ class MyApp(QMainWindow):
             self.overlay.set_overlay_color(QColor(255, 0, 0, 100))
             self.current_color = 'RED'
 
-            QTimer.singleShot(500, lambda: self.clear_overlay_signal.emit())
-
+            print("SETTING OVERLAY TO CLEAR")
+            QTimer.singleShot(500, lambda: self.set_color_signal.emit('CLEAR'))
+            print("OVERLAY SET TO CLEAR")
+            
         elif selected_color == 'GREEN':
             self.overlay.set_overlay_color(QColor(0, 255, 0, 100)) 
             self.current_color = 'GREEN'
-            QTimer.singleShot(6000, lambda: self.clear_overlay_signal.emit())
+
+            print("SETTING OVERLAY TO CLEAR")
+            QTimer.singleShot(500, lambda: self.set_color_signal.emit('CLEAR'))
+            print("OVERLAY SET TO CLEAR")
 
         elif selected_color == 'YELLOW':
             self.overlay.set_overlay_color(QColor(255, 255, 0, 100)) 

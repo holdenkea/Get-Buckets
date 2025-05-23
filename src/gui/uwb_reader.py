@@ -8,23 +8,39 @@ class Data_Reader_Thread(QThread):
 
     # MAKE SURE TO FIGURE OUT OFFSET TO MULTIPLY COORDINATES
 
+    # anchor coordinates for 50x47 feet
     anchor_coordinates_cm = [
         (0,0),
         (1524, 0),
         (762, 1432.56)
     ]
 
+    # mock data for 3 feet
     #anchor_coordinates_cm = [
-    #    (0,0),
+    ##    (0,0),
     #    (91.44, 0),
     #    (45.72, 91.44)
     #]
 
-    # with OFFSET for testing
+    # mock data for 10 feet
     #anchor_coordinates_cm = [
     #    (0,0),
-    #    (121, 0),
-    #    (75, 121)
+    #    (304.8, 0),
+    #    (152.4, 304.8)
+    #]
+
+    # mock data for 10x10 feet + 18 cm offset
+    #anchor_coordinates_cm = [
+    #    (0,0),
+    #    (322.8, 0),
+    #    (161.4, 322.8)
+    #]
+
+    # with OFFSET for testing x +10
+    #anchor_coordinates_cm = [
+    #    (0,0),
+    ##    (101.44, 0),
+     #   (50.72, 101.44)
     #]
 
     # tuple to return coordinates
