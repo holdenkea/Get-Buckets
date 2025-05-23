@@ -1,6 +1,10 @@
 ## Table of Contents
 - [About](#about)
 - [Components and Demo Videos](#components-and-demo-videos)
+  - [Real Time Pose Detection](#real-time-pose-detection)
+  - [Indoor Localization](#indoor-localization)
+  - [Break Beam Sensor](#break-beam-sensor)
+  - [User Interface](#user-interface)   
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
@@ -16,11 +20,17 @@ Welcome to my Get Buckets repository! This project was driven by my love for the
 
 This project combines a real-time pose classifier, UWB modules for indoor positioning, and a simple UI to track, save, and visualize where on the court shots were made and missed.
 
-For a full tutorial of my data collection and model building process you can visit my [colab notebook](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
-
-<img width="716" alt="image" src="https://github.com/user-attachments/assets/7dca0c20-c75a-4396-9df0-0253694f9381" />
+For a recap of my data collection and model building process you can visit my [colab notebook](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
 
 ## Components and Demo Videos
+
+### Real Time Pose Detection
+
+### Indoor Localization
+
+### Break Beam Sensor
+
+### User Interface
 
 ## Getting Started
 
