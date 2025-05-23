@@ -16,14 +16,15 @@ class ColorOverlay(QWidget):
 
 
     def set_overlay_color(self, color: QColor):
-        self._color = color
-        self.update()
+        if color != self._color:
+            self._color = color
+            self.update()
 
     def clear_overlay(self):
         print("Clearing overlay")
         self.set_overlay_color(QColor(0, 0, 0, 0))
 
     def paintEvent(self, event):
-        print(f"Painting overlay with color: {self._color.getRgb()}")
+        #print(f"Painting overlay with color: {self._color.getRgb()}")
         painter = QPainter(self)
         painter.fillRect(self.rect(), self._color)
