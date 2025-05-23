@@ -1,10 +1,14 @@
 ## Table of Contents
 - [About](#about)
+  
 - [Components and Demo Videos](#components-and-demo-videos)
   - [Real Time Pose Detection](#real-time-pose-detection)
   - [Indoor Localization](#indoor-localization)
   - [User Interface](#user-interface)   
   - [Break Beam Sensor](#break-beam-sensor)
+    
+- [Demo Video](#demo-video)
+  
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
@@ -12,7 +16,9 @@
   - [Setting up UWB Modules](#setting-up-uwb-modules)
   - [Setting up Arduino Nano](#setting-up-arduino-nano)
   - [Break Beam Sensor and Basketball Chute](#break-beam-sensor-and-basketball-chute)
+    
 - [License](#license)
+  
 - [Acknowledgements](#acknowledgements)
 
 ## About
@@ -21,6 +27,8 @@ Welcome to my Get Buckets repository! This project was driven by my love for the
 This project combines a real-time pose classifier, UWB modules for indoor positioning, a break beam sensor to track made or missed shots, and a simple UI to visualize and save where on the court shots were made and missed.
 
 For a recap of my data collection and model building process you can visit my [colab notebook](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
+
+If you want to skip the components section and see the full demo video, see [Demo Video](#demo-video).
 
 ## Components and Demo Videos
 
@@ -43,6 +51,9 @@ The interface allows a user to start and end a workout, visualize the tag's loca
 
 ### Break Beam Sensor
 An infrared transmitter and reciever is attached to a basketball rebounding chute, and when the beam is broken by the basketball, a "make" is recorded, if the beam doesn't break within a set amount of time, a "miss" is recorded.
+
+## Demo Video
+(PASTE YOUTUBE URL HERE)
 
 ## Getting Started
 
