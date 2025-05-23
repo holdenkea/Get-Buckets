@@ -18,19 +18,23 @@
 ## About
 Welcome to my Get Buckets repository! This project was driven by my love for the game of basketball, and how I would have to fill out "shot charts" for my basketball teams as a young kid.
 
-This project combines a real-time pose classifier, UWB modules for indoor positioning, and a simple UI to track, save, and visualize where on the court shots were made and missed.
+This project combines a real-time pose classifier, UWB modules for indoor positioning, a break beam sensor to track made or missed shots, and a simple UI to visualize and save where on the court shots were made and missed.
 
 For a recap of my data collection and model building process you can visit my [colab notebook](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
 
 ## Components and Demo Videos
 
 ### Real Time Pose Detection
+This pose detection model is able to classify three actions, **shooting, dribbling, and idling.**
 
 ### Indoor Localization
+Indoor positioning is determined by the tag module's location within the three anchor module.
 
 ### Break Beam Sensor
+An infrared transmitter and reciever is attached to a basketball rebounding chute, and when the beam is broken by the basketball, a "make" is recorded, if the beam doesn't break within a set amount of time, a "miss" is recorded.
 
 ### User Interface
+The interface allows a user to start and end a workout, visualize the tag's location in real time, and see made and missed shots and their location in real time. I will later implement a recap with things such as 3pt%, FG%, etc.
 
 ## Getting Started
 
@@ -111,12 +115,10 @@ For more comprehensive instructions you can view the [manufacturer instructions.
   10) Use the found IP address as input in the GUI
 
 ### Break Beam Sensor and Basketball Chute
-  1) Break beam sensor has transmitter and reciever sides
-  2) Reciever side wired to Arduino Nano Pin 5 and Ground
+  1) Break beam sensor has transmitter and reciever side
+  2) Reciever side is wired to Arduino Nano Pin 5 and Ground
   3) Power drawn from 5v battery pack
   4) Beam breaks communicated over wifi through Arduino Nano ESP32
-
-
 
 ## License
 Apache License 2.0 
