@@ -51,7 +51,7 @@ The interface allows a user to start and end a workout, visualize the tag's loca
 
 ![gui_demo](https://github.com/user-attachments/assets/6475569b-534f-4ee1-8934-000895030438)
 
-The below video is a test for indoor positioning. 
+The below video is a test for indoor positioning. Each anchor is placed on the top of the chairs and all modules are powered by battery packs, with the tag transmitting the location data over wifi to the gui.
 
 https://github.com/user-attachments/assets/255da08e-3365-497c-af77-4d389f32535d
 
