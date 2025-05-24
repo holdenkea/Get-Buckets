@@ -51,6 +51,10 @@ The interface allows a user to start and end a workout, visualize the tag's loca
 
 ![gui_demo](https://github.com/user-attachments/assets/6475569b-534f-4ee1-8934-000895030438)
 
+The below video showcases a test for just indoor positioning. I will show the made and missed shots in the following section.
+
+(VIDEO FOR INDOOR POSITIONING HERE)
+
 ### Break Beam Sensor
 An infrared transmitter and reciever is attached to a basketball rebounding chute, and when the beam is broken by the basketball, a "make" is recorded, if the beam doesn't break within a set amount of time, a "miss" is recorded.
 
