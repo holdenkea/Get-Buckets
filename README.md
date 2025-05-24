@@ -64,7 +64,7 @@ Inside the housing is the Arduino Nano and the required power supplies. The info
 
 ![Screenshot 2025-05-23 162335](https://github.com/user-attachments/assets/8fd8ca40-ee1c-44df-8f4f-38022be4e6bb)
 
-Here is how the break beam sensor works in conjunction with the UI and the pose detection model on TOY uwb data. You will notice that the gui lights up yellow when shooting is detected, representing a timeframe that the python code will query the Nano and check for any makes. When a make is detected, the gui will flash green. If no makes are detected within the timeframe, it will flash red. The location of the made or missed shot is represented by a green 'o' or red 'x' on the gui.
+Here is how the break beam sensor works in conjunction with the UI and the pose detection model on TOY uwb data. The gui lights up yellow when shooting is detected, representing a timeframe for checking made shots. When a make is detected, the gui will flash green. If no makes are detected within the timeframe, it will flash red. The location of the made or missed shot is represented by a green 'o' or red 'x' on the gui.
 
 Made Shots:
 
