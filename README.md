@@ -53,12 +53,15 @@ The interface allows a user to start and end a workout, visualize the tag's loca
 
 ### Break Beam Sensor
 An infrared transmitter and reciever is attached to a basketball rebounding chute, and when the beam is broken by the basketball, a "make" is recorded, if the beam doesn't break within a set amount of time, a "miss" is recorded.
+
 ![IMG_1891](https://github.com/user-attachments/assets/75fed232-4ea6-44c3-a5af-388bf2b7801a)
 
 Location of the infrared beam sensors.
+
 ![Screenshot 2025-05-23 161814](https://github.com/user-attachments/assets/1f848b24-15a7-4d93-bf97-3261cabadfdb)
 
 Inside the housing is the Arduino Nano and the required power supplies. The information on a make or miss is communicated through a pin on the Nano and held on a server hosted by the Nano. It is then queried by beam_reader.py when needed.
+
 ![Screenshot 2025-05-23 162335](https://github.com/user-attachments/assets/8fd8ca40-ee1c-44df-8f4f-38022be4e6bb)
 
 (BRIEF VIDEO OF SHOOTING AND BREAK BEAM MAKE)
