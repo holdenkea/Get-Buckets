@@ -7,7 +7,7 @@
   - [User Interface](#user-interface)   
   - [Break Beam Sensor](#break-beam-sensor)
     
-- [Demo Video](#demo-video)
+- [Comprehensive Demo](#comprehensive-video)
   
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
@@ -64,11 +64,23 @@ Inside the housing is the Arduino Nano and the required power supplies. The info
 
 ![Screenshot 2025-05-23 162335](https://github.com/user-attachments/assets/8fd8ca40-ee1c-44df-8f4f-38022be4e6bb)
 
-(BRIEF VIDEO OF SHOOTING AND BREAK BEAM MAKE)
+Here is how the break beam sensor works in conjunction with the UI and the pose detection model on TOY uwb data. You will notice that the gui lights up yellow when shooting is detected, representing a timeframe that the python code will query the Nano and check for any makes. When a make is detected, the gui will flash green. If no makes are detected within the timeframe, it will flash red. The location of the made or missed shot is represented by a green 'o' or red 'x' on the gui.
 
-(BRIEF VIDEO OF SHOOTING AND BREAK BEAM MISS)
+Made Shots:
 
-## Demo Video
+https://github.com/user-attachments/assets/07da37a7-39e2-41cc-889e-eb7c0f1c28b0
+
+https://github.com/user-attachments/assets/923d1111-8ec0-4526-a2b0-906e3c20a770
+
+https://github.com/user-attachments/assets/eea95b3d-3312-4e42-a6b1-a66ce61b1b30
+
+Missed Shots:
+
+https://github.com/user-attachments/assets/8fbe2285-6db1-4c9f-8d9e-d603c4950ad9
+
+https://github.com/user-attachments/assets/7bb3a069-11a1-40f9-8d91-433424f73d47
+
+## Comprehensive Demo
 (PASTE YOUTUBE URL HERE)
 
 ## Getting Started
