@@ -4,21 +4,23 @@ import numpy as np
 import serial
 import serial.tools.list_ports
 
+import requests
+
 class Data_Reader_Thread(QThread):
 
     # MAKE SURE TO FIGURE OUT OFFSET TO MULTIPLY COORDINATES
 
     # anchor coordinates for 50x47 feet
-    anchor_coordinates_cm = [
-        (0,0),
-        (1524, 0),
-        (762, 1432.56)
-    ]
+    #anchor_coordinates_cm = [
+    #    (0,0),
+    #    (1524, 0),
+    #    (762, 1432.56)
+    #]
 
     # mock data for 3 feet
     #anchor_coordinates_cm = [
     ##    (0,0),
-    #    (91.44, 0),
+    #   (91.44, 0),
     #    (45.72, 91.44)
     #]
 
@@ -36,20 +38,37 @@ class Data_Reader_Thread(QThread):
     #    (161.4, 322.8)
     #]
 
-    # with OFFSET for testing x +10
+    # mock data for 11 feet
     #anchor_coordinates_cm = [
     #    (0,0),
-    ##    (101.44, 0),
-     #   (50.72, 101.44)
+    #    (335.28, 0),
+    #    (167.64, 335.28)
     #]
+
+    # mock data for 11 feet + 18cm offset
+    #anchor_coordinates_cm = [
+    #    (0,0),
+    #    (353.28, 0),
+    #    (176.64, 353.28)
+    #]
+
+    # data for backyard testing +18cm offset
+    anchor_coordinates_cm = [
+        (588.12,0),
+        (1359.12, 0),
+        (780, 810.48)
+    ]
+
 
     # tuple to return coordinates
     new_signal = pyqtSignal(tuple)
 
-    def __init__(self, file_path, use_serial):
+    def __init__(self, tag_ip, file_path, use_serial):
         super().__init__()
         self.file_path = file_path
         self.use_serial = use_serial
+        self.tag_ip = tag_ip
+        self.tag_url = f"http://{tag_ip}" if tag_ip else None
         self.running = True
         self.current_position = (None, None)
         self.ser = None
@@ -86,13 +105,27 @@ class Data_Reader_Thread(QThread):
                         print(f"NEW POSITION IS {new_position}")
                         self.new_signal.emit(new_position)
 
-            # if use serial is false, read from toy data
+            # if tag url exists and the file path is none
+            elif self.tag_url and self.file_path == None:
+                while self.running:
+                    print("READING HTTP DATA")
+                    new_position = self.read_http_data()
+                    
+                    if new_position != (None, None):
+                        self.current_position = new_position
+                        self.new_signal.emit(new_position)
+
+                    # tune this delay as needed
+                    #time.sleep(0.1)
+
+            # use toy data
             else:
                 with open(self.file_path, 'r') as file:
                     tag_position = None
                     while self.running:
                         # read toy data
                         new_position = self.read_toy_data(file)
+                        print("READING TOY DATA")
 
                         if new_position == (None, None):  
                             break
@@ -120,6 +153,22 @@ class Data_Reader_Thread(QThread):
     def stop(self):
         self.running = False
         self.wait()
+
+    def read_http_data(self):
+        try:
+            response = requests.get(self.tag_url, timeout=1)
+            if response.status_code == 200:
+                data = response.json()
+
+                d0, d1, d2 = data["d0"], data["d1"], data["d2"]
+                xt, yt = self.perform_trilateration(d0, d1, d2, self.anchor_coordinates_cm)
+                print(f"Estimated position from HTTP: ({xt}, {yt})")
+                return xt, yt
+        except requests.RequestException as e:
+            print(f"HTTP error querying UWB ESP32: {e}")
+        except Exception as e:
+            print(f"Error parsing HTTP response: {e}")
+        return None, None
 
     def read_data(self):
         try:
