@@ -57,14 +57,25 @@ class MyApp(QMainWindow):
         self.stop_button.clicked.connect(self.stop_run)
         self.save_button.clicked.connect(self.save_run)
 
-        # wifi label fields
-        self.ip_input_label = QLabel("ESP32 IP Address:")
-        self.ip_input_field = QLineEdit()
-        self.ip_input_field.setPlaceholderText("xxx.xxx.x.xx")
+        # nano wifi label fields
+        self.nano_ip_input_label = QLabel("Arduino Nano IP Address:")
+        self.nano_ip_input_field = QLineEdit()
+        self.nano_ip_input_field.setPlaceholderText("xxx.xxx.x.xx")
 
-        # buttons added here
-        button_layout.addWidget(self.ip_input_label)
-        button_layout.addWidget(self.ip_input_field)
+        # mauwb tag label fields
+        self.tag_ip_input_label = QLabel("UWB Tag IP Address:")
+        self.tag_ip_input_field = QLineEdit()
+        self.tag_ip_input_field.setPlaceholderText("xxx.xxx.x.xx")
+
+        # arduino nano ip field
+        button_layout.addWidget(self.nano_ip_input_label)
+        button_layout.addWidget(self.nano_ip_input_field)
+
+        # mauwb tag ip field
+        button_layout.addWidget(self.tag_ip_input_label)
+        button_layout.addWidget(self.tag_ip_input_field)
+
+        # other buttons
         button_layout.addWidget(self.begin_tracking_button)
         button_layout.addWidget(self.stop_button)
         button_layout.addWidget(self.save_button)
@@ -85,8 +96,8 @@ class MyApp(QMainWindow):
         self.plot_widget.setYRange(0, 47)
         
         # test coordinate range 3x3 feet
-        #self.plot_widget.setXRange(0, 10)
-        #self.plot_widget.setYRange(0, 10)
+        #self.plot_widget.setXRange(0, 11)
+        #self.plot_widget.setYRange(0, 11)
         
         self.plot_widget.disableAutoRange()
 
@@ -176,19 +187,35 @@ class MyApp(QMainWindow):
         # Start the data reading thread
         if not self.data_reader_thread:
 
-            # ip address from input field in UI
-            esp_32_ip = self.ip_input_field.text().strip()
-            print(f"STRIPPED IP IS {esp_32_ip}")
+            # nano ip address from input field in UI
+            nano_ip = self.nano_ip_input_field.text().strip()
+            print(f"STRIPPED NANO IP IS {nano_ip}")
             
-            if not esp_32_ip:
-                print("Please enter a valid ESP32 IP address.")
+            if not nano_ip:
+                print("Please enter a valid Arduino Nano IP address.")
                 return
 
-            self.br = br.Beam_Reader(esp_32_ip)
+            self.br = br.Beam_Reader(nano_ip)
+
+            # tag ip address from input field in UI
+            tag_ip = self.tag_ip_input_field.text().strip()
+            print(f"STRIPPED TAG IP IS {tag_ip}")
+
+            if not tag_ip:
+                print("Please enter a valid UWB IP address.")
+                return
 
             # opens a uwb reader thread which consistently updates position in gui
-            self.data_reader_thread = Data_Reader_Thread('./src/uwb/python/toy.txt', use_serial=False)
-            # self.data_reader_thread = Data_Reader_Thread(file_path=None, use_serial=True)
+
+            # USE TOY DATA
+            #self.data_reader_thread = Data_Reader_Thread(tag_ip=None, file_path='./src/uwb/python/toy.txt', use_serial=False)
+            
+            # USE SERIAL
+            #self.data_reader_thread = Data_Reader_Thread(tag_ip=None, file_path=None, use_serial=True)
+            
+            # USE WIFI
+            self.data_reader_thread = Data_Reader_Thread(tag_ip=tag_ip, file_path=None, use_serial=False)
+
             self.data_reader_thread.new_signal.connect(self.update_position)
             self.data_reader_thread.start()
 

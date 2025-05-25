@@ -25,6 +25,7 @@ Use 2.5.7   Adafruit_SSD1306
 #include <Adafruit_SSD1306.h>
 #include <Arduino.h>
 
+
 #define SERIAL_LOG Serial
 #define SERIAL_AT mySerial2
 
@@ -39,6 +40,15 @@ HardwareSerial SERIAL_AT(2);
 #define I2C_SCL 38
 
 Adafruit_SSD1306 display(128, 64, &Wire, -1);
+
+#include <WiFi.h>
+
+// wifi credentials here
+const char* ssid = "";
+const char* password = "";
+
+// esp32 connected to WiFi and starts web server on port 80
+WiFiServer server(80);
 
 void setup()
 {
@@ -75,6 +85,21 @@ void setup()
     sendData("AT+RESTART", 2000, 1);
 //    sendData("AT+SLEEP=65535", 2000, 1);
 //    esp_deep_sleep_start();
+    
+    // wifi code
+    WiFi.begin(ssid, password);
+    Serial.print("Connecting to wifi");
+
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+
+    Serial.println("WiFi Connected!");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+
+    server.begin();
 }
 
 long int runtime = 0;
@@ -84,7 +109,6 @@ String rec_head = "AT+RANGE";
 
 void loop()
 {
-
     // put your main code here, to run repeatedly:
     while (SERIAL_LOG.available() > 0)
     {
@@ -115,17 +139,48 @@ void loop()
                     String r1 = rangeValues.substring(firstComma + 1, secondComma);
                     String r2 = rangeValues.substring(secondComma + 1, thirdComma);
             
+                    String json = "{\"d0\":" + r0 + ",\"d1\":" + r1 + ",\"d2\":" + r2 + "}";
+                    SERIAL_LOG.println("Sending JSON: " + json);
+
+                    // accept and send json
+                    WiFiClient client = server.accept();
+                    if (client) {
+                        Serial.println("New client.");
+
+                        // wait until client sends a request
+                        while (client.connected() && !client.available()) {
+                            delay(1);
+                        }
+
+                        while (client.available()) {
+                            char c = client.read();
+                            if (c == '\n') {
+                                client.println("HTTP/1.1 200 OK");
+                                client.println("Content-Type: application/json");
+                                client.println();
+                                client.println(json);
+                                break;
+                            }
+                        }
+
+                        client.stop();
+                        Serial.println("client disconnected");
+
+                    /*
                     SERIAL_LOG.print("RANGE:");
                     SERIAL_LOG.print(r0);
                     SERIAL_LOG.print(",");
                     SERIAL_LOG.print(r1);
                     SERIAL_LOG.print(",");
                     SERIAL_LOG.println(r2);
+                    */
+                 
+                    }   
                 }
             }
             response = "";
         }
-        else
+        else 
             response += c;
     }
 }
