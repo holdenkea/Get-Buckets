@@ -1,14 +1,14 @@
 ## Table of Contents
 - [About](#about)
-  
+
+- [Final Demo Video](#final-demo-video)
+
 - [Components and Demo Videos](#components-and-demo-videos)
   - [Real Time Pose Detection](#real-time-pose-detection)
   - [Indoor Localization](#indoor-localization)
   - [User Interface](#user-interface)   
   - [Break Beam Sensor](#break-beam-sensor)
-    
-- [Comprehensive Demo](#comprehensive-video)
-  
+      
 - [Getting Started](#getting-started)
   - [Set up Virtual Environment](#set-up-virtual-environment)  
   - [Clone the Repo](#clone-the-repo)
@@ -29,6 +29,9 @@ This project combines a real-time pose classifier, UWB modules for indoor positi
 For a recap of my data collection and model building process you can visit my [colab notebook](https://colab.research.google.com/drive/1WI-09Oz9cyWwPGClQgsOGs4Z_GwHAM_2?usp=sharing).
 
 If you want to skip the components section and see the full demo video, see this section. [Demo Video](#demo-video).
+
+## Final Demo Video
+![Demo Video (YouTube)]https://youtu.be/NQTAqDtW8-g
 
 ## Components and Demo Videos
 
@@ -83,9 +86,6 @@ Missed Shots:
 https://github.com/user-attachments/assets/8fbe2285-6db1-4c9f-8d9e-d603c4950ad9
 
 https://github.com/user-attachments/assets/7bb3a069-11a1-40f9-8d91-433424f73d47
-
-## Comprehensive Demo
-(PASTE YOUTUBE URL HERE)
 
 ## Getting Started
 
