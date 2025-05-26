@@ -31,7 +31,7 @@ For a recap of my data collection and model building process you can visit my [c
 If you want to skip the components section and see the full demo video, see this section. [Demo Video](#demo-video).
 
 ## Final Demo Video
-![Demo Video (YouTube)]https://youtu.be/NQTAqDtW8-g
+https://youtu.be/NQTAqDtW8-g
 
 ## Components and Demo Videos
 
